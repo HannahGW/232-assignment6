@@ -1,24 +1,32 @@
 #' Forest Growth Function
 #' 
 #' [explanation here]
-#' @param T is the period of growth
-#' @param P is the initial population
-#' @param r is the intrinsic growth rate before canopy closure
-#' @param g is the linear growth rate after canopy closure
-#' @param K is the carrying capacity
-#' @return size of forest at time T (in units of Carbon)
+#' @param time is the period of growth
+#' @param C is the size of the forest (canopy cover)
+#' @param parms$r is the exponential growth rate (below canopy cover threshold)
+#' @param parms$g is the linear growth rate (at or above canopy threshold)
+#' @param parms$Ct is the threshold for Carbon storage
+#' @param parms$K is the carrying capacity of forest size (canopy cover)
+#' @return C size of forest at time T (in units of Carbon)
 #' 
 #' @authors
 #' Anna Abelman, Margaret Brickner, & Hannah Garcia
 #' 
 
-forest_growth = function(T, P0, r, g, K){ 
+forest_growth = function(time, C, parms){ 
+
+  # For when C < K
+  exponential = parms$r*C
   
-  P = P0 * exp(r*T)
-  if(P>K) {
-    r=g
-  }
+  # For when C >= K
+  linear = parms$g
+  
+  capacity = 0 
+  
+  forest_size = ifelse(C<parms$Ct, exponential,
+                       ifelse(C>=parms$Ct&C<parms$K, linear, capacity))
+  
+  return(lists(forest_size))
 }
   
 
-# not sure how to include g? no idea if this is correct either lol
