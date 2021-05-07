@@ -42,7 +42,7 @@ forest_result = ode(y = initial_size, times = years, func = forest_growth, parms
 colnames(forest_result)=c("year","size")
 head(forest_result)
 
-# Graph the Results. I think that this looks right now? It was jumping to 250 at year 162/163? I messed around with a few things (not totally sure what I changed that works, but it seems to be working now). 
+# Graph the Results. I think that this looks right now. Before it was jumping to 250 at year 162/163. I messed around with a few things (not totally sure what I changed that worked, but it seems to be working now). 
 
 ggplot(as.data.frame(forest_result), aes(year, size))+
   geom_point(colour = "forestgreen", size = .3) + 
