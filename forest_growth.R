@@ -26,7 +26,7 @@ forest_growth = function(time, C, parms){
   forest_size = ifelse(C<parms$Ct, exponential,
                        ifelse(C>=parms$Ct&C<parms$K, linear, capacity))
   
-  return(lists(forest_size))
+  return(list(forest_size))
 }
   
 

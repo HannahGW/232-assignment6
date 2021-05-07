@@ -17,12 +17,43 @@ library(deSolve)
 
 ```{r}
 # read in function
+source("forest_growth.R")
 ```
 
 ### ODE
 ```{r}
 # Run the model for 300 years (using the ODE solver)  starting with an initial forest size of 10 kg/C, and using the following parameters: canopy closure threshold of 50 kgC , K = 250 kg C (carrying capacity) , r=  0.01 (exponential growth rate before before canopy closure), g = 2 kg/year (linear growth rate after canopy closure)
 
+# Set all of the parameters so they're easier to update and easier to track. 
+
+forest_parms = list(K=250, r = 0.01, g = 2, Ct = 50)
+
+# Set the years and initial size
+
+years = seq(from=1, to=300, by=1)
+initial_size = 10
+
+# Use ODE solver to run the model for 300 years
+
+forest_result = ode(y = initial_size, times = years, func = forest_growth, parms = forest_parms)
+
+# Check out the results
+
+colnames(forest_result)=c("year","size")
+head(forest_result)
+
+# Graph the Results. I think that this looks right now? It was jumping to 250 at year 162/163? I messed around with a few things (not totally sure what I changed that works, but it seems to be working now). 
+
+ggplot(as.data.frame(forest_result), aes(year, size))+
+  geom_point(colour = "forestgreen", size = .3) + 
+  labs(title = "Modeled Forest Growth", x = "Year", y = "Forest Size (kg/C)")+ 
+  theme_minimal() +
+  theme(axis.line = element_line(color = "dimgrey"), 
+        panel.border = element_rect(fill = NA, color = NA), 
+        panel.grid.minor.y = element_blank(), 
+        panel.grid.minor.x = element_blank()) + 
+  scale_x_continuous(expand = c(0.0,1)) + 
+  scale_y_continuous(expand = c(0.0,1))
 
 ```
 
