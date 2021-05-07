@@ -1,6 +1,5 @@
 #' Forest Growth Function
 #' 
-#' [explanation here]
 #' @param time is the period of growth
 #' @param C is the size of the forest (canopy cover)
 #' @param parms$r is the exponential growth rate (below canopy cover threshold)
